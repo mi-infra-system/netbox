@@ -9,7 +9,7 @@ from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.utils import timezone
 from django.utils.functional import classproperty
 from django.utils.translation import gettext_lazy as _
-from django_pglocks import advisory_lock
+from django_pg_utils import advisory_lock
 from rq.timeouts import JobTimeoutException
 
 from core.choices import JobStatusChoices

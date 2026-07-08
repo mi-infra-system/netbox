@@ -4,7 +4,7 @@ from functools import cached_property
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.db import router, transaction
 from django.db.models import ProtectedError, RestrictedError
-from django_pglocks import advisory_lock
+from django_pg_utils import advisory_lock
 from rest_framework import mixins as drf_mixins
 from rest_framework import status
 from rest_framework.exceptions import MethodNotAllowed
