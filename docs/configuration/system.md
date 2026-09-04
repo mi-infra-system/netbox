@@ -28,14 +28,6 @@ Defines the default preferred language/locale for requests that do not specify o
 
 ---
 
-## DOCS_ROOT
-
-Default: `$INSTALL_ROOT/docs/`
-
-The filesystem path to NetBox's documentation. This is used when presenting context-sensitive documentation in the web UI. By default, this will be the `docs/` directory within the root NetBox installation path. (Set this to `None` to disable the embedded documentation.)
-
----
-
 ## EMAIL
 
 In order to send email, NetBox needs an email server configured. The following items can be defined within the `EMAIL` configuration parameter:
@@ -278,7 +270,7 @@ The dotted path to the desired search backend class. `CachedValueSearchBackend` 
 
 ## STORAGES
 
-The backend storage engine for handling uploaded files such as [image attachments](../models/extras/imageattachment.md) and [custom scripts](../customization/custom-scripts.md). NetBox integrates with the [`django-storages`](https://django-storages.readthedocs.io/en/stable/) and [`django-storage-swift`](https://github.com/dennisv/django-storage-swift) libraries, which provide backends for several popular file storage services. If not configured, local filesystem storage will be used.
+The Django storage backends used for uploaded files such as [image attachments](../models/extras/imageattachment.md) and [custom scripts](../customization/custom-scripts.md). The hardened fork uses Django's local filesystem storage by default.
 
 By default, the following configuration is used:
 
@@ -301,95 +293,10 @@ STORAGES = {
 
 Within the `STORAGES` dictionary, `"default"` is used for image uploads, "staticfiles" is for static files and `"scripts"` is used for custom scripts.
 
-If using a remote storage such as S3 or an S3-compatible service, define the configuration as `STORAGES[key]["OPTIONS"]` for each storage item as needed. For example:
-
-```python
-STORAGES = {
-    'default': {
-        'BACKEND': 'storages.backends.s3.S3Storage',
-        'OPTIONS': {
-            'bucket_name': 'netbox',
-            'access_key': 'access key',
-            'secret_key': 'secret key',
-            'region_name': 'us-east-1',
-            'endpoint_url': 'https://s3.example.com',
-            'location': 'media/',
-        },
-    },
-    'staticfiles': {
-        'BACKEND': 'storages.backends.s3.S3Storage',
-        'OPTIONS': {
-            'bucket_name': 'netbox',
-            'access_key': 'access key',
-            'secret_key': 'secret key',
-            'region_name': 'us-east-1',
-            'endpoint_url': 'https://s3.example.com',
-            'location': 'static/',
-        },
-    },
-    'scripts': {
-        'BACKEND': 'storages.backends.s3.S3Storage',
-        'OPTIONS': {
-            'bucket_name': 'netbox',
-            'access_key': 'access key',
-            'secret_key': 'secret key',
-            'region_name': 'us-east-1',
-            'endpoint_url': 'https://s3.example.com',
-            'location': 'scripts/',
-            'file_overwrite': True,
-        },
-    },
-}
-```
-
-`bucket_name` is required for `S3Storage`. When using an S3-compatible service, set `region_name` and `endpoint_url` according to your provider.
-
-The specific configuration settings for each storage backend can be found in the [django-storages documentation](https://django-storages.readthedocs.io/en/latest/index.html).
+The `default` and `scripts` backends use the local filesystem. Configure only Django storage backends that are available in the installation; no third-party storage integration is bundled.
 
 !!! note
     Any keys defined in the `STORAGES` configuration parameter replace those in the default configuration. It is only necessary to define keys within the `STORAGES` for the specific backend(s) you wish to configure.
-
-### Environment Variables and Third-Party Libraries
-
-NetBox uses an explicit Python configuration approach rather than automatic environment variable detection. While this provides clear configuration management and version control capabilities, it affects how some third-party libraries like `django-storages` function within NetBox's context.
-
-Many Django libraries (including `django-storages`) expect to automatically detect environment variables like `AWS_STORAGE_BUCKET_NAME` or `AWS_S3_ACCESS_KEY_ID`. However, NetBox's configuration processing prevents this automatic detection from working as documented in some of these libraries.
-
-When using third-party libraries that rely on environment variable detection, you may need to explicitly read environment variables in your NetBox `configuration.py`:
-
-```python
-import os
-
-STORAGES = {
-    'default': {
-        'BACKEND': 'storages.backends.s3.S3Storage',
-        'OPTIONS': {
-            'bucket_name': os.environ.get('AWS_STORAGE_BUCKET_NAME'),
-            'access_key': os.environ.get('AWS_S3_ACCESS_KEY_ID'),
-            'secret_key': os.environ.get('AWS_S3_SECRET_ACCESS_KEY'),
-            'region_name': os.environ.get('AWS_S3_REGION_NAME'),
-            'endpoint_url': os.environ.get('AWS_S3_ENDPOINT_URL'),
-            'location': 'media/',
-        }
-    },
-    'staticfiles': {
-        'BACKEND': 'storages.backends.s3.S3Storage',
-        'OPTIONS': {
-            'bucket_name': os.environ.get('AWS_STORAGE_BUCKET_NAME'),
-            'access_key': os.environ.get('AWS_S3_ACCESS_KEY_ID'),
-            'secret_key': os.environ.get('AWS_S3_SECRET_ACCESS_KEY'),
-            'region_name': os.environ.get('AWS_S3_REGION_NAME'),
-            'endpoint_url': os.environ.get('AWS_S3_ENDPOINT_URL'),
-            'location': 'static/',
-        }
-    },
-}
-```
-
-This approach works because the environment variables are resolved during NetBox's configuration processing, before the third-party library attempts its own environment variable detection.
-
-!!! warning "Configuration Behavior"
-    Simply setting environment variables like `AWS_STORAGE_BUCKET_NAME` without explicitly reading them in your configuration will not work. The variables must be read using `os.environ.get()` within your `configuration.py` file.
 
 ---
 

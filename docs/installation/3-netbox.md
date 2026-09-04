@@ -201,14 +201,6 @@ When you have finished modifying the configuration, remember to save the file.
 
 All Python packages required by NetBox are listed in `requirements.txt` and will be installed automatically. NetBox also supports some optional packages. If desired, these packages must be listed in `local_requirements.txt` within the NetBox root directory.
 
-### Remote File Storage
-
-By default, NetBox will use the local filesystem to store uploaded files. To use a remote filesystem, install the [`django-storages`](https://django-storages.readthedocs.io/en/stable/) library and configure your [desired storage backend](../configuration/system.md#storages) in `configuration.py`.
-
-```no-highlight
-sudo sh -c "echo 'django-storages' >> /opt/netbox/local_requirements.txt"
-```
-
 ### Remote Data Sources
 
 NetBox supports integration with several remote data sources via configurable backends. Each of these requires the installation of one or more additional libraries.

@@ -221,8 +221,6 @@ class ResolveInstallPathsTest(SimpleTestCase):
             self.assertEqual(paths.install_mode, 'checkout')
             self.assertEqual(paths.base_dir, base_dir)
             self.assertEqual(paths.netbox_root, base_dir)
-            self.assertEqual(paths.docs_root, os.path.join(root, 'docs'))
-            self.assertEqual(paths.static_docs_root, os.path.join(base_dir, 'project-static', 'docs'))
 
     def test_wheel_roots_default_netbox_root(self):
         with tempfile.TemporaryDirectory() as root:
@@ -233,8 +231,6 @@ class ResolveInstallPathsTest(SimpleTestCase):
             self.assertEqual(paths.install_mode, 'wheel')
             self.assertEqual(paths.base_dir, base_dir)
             self.assertEqual(paths.netbox_root, '/opt/netbox')
-            self.assertEqual(paths.docs_root, os.path.join(base_dir, 'docs'))
-            self.assertEqual(paths.static_docs_root, os.path.join(base_dir, 'docs'))
 
     def test_netbox_root_env_override_is_abspathed(self):
         with tempfile.TemporaryDirectory() as root:

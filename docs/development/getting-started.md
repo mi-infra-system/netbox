@@ -31,7 +31,7 @@ remote: Total 85949 (delta 3538), reused 4332 (delta 3438), pack-reused 81277
 Receiving objects: 100% (85949/85949), 55.16 MiB | 44.90 MiB/s, done.
 Resolving deltas: 100% (68008/68008), done.
 $ ls netbox/
-base_requirements.txt  contrib          docs         mkdocs.yml  NOTICE     requirements.txt  upgrade.sh
+base_requirements.txt  contrib          docs         NOTICE     requirements.txt  upgrade.sh
 CHANGELOG.md           CONTRIBUTING.md  LICENSE.txt  netbox      README.md  scripts
 ```
 
@@ -97,7 +97,6 @@ NetBox uses [`pre-commit`](https://pre-commit.com/) to automatically validate co
 * Run the `ruff` Python linter
 * Run Django's internal system check
 * Check for missing database migrations
-* Validate any changes to the documentation with `zensical`
 * Validate Typescript & Sass styling with `yarn`
 * Ensure that any modified static front end assets have been recompiled
 

@@ -93,22 +93,6 @@ jsonschema
 # https://python-markdown.github.io/changelog/
 Markdown
 
-# Retain MkDocs 1.x for mkdocstrings
-# https://github.com/mkdocs/mkdocs
-mkdocs<2.0
-
-# MkDocs Material theme (for documentation build)
-# https://squidfunk.github.io/mkdocs-material/changelog/
-mkdocs-material
-
-# Introspection for embedded code
-# https://github.com/mkdocstrings/mkdocstrings/blob/main/CHANGELOG.md
-mkdocstrings
-
-# Python handler for mkdocstrings
-# https://github.com/mkdocstrings/python/blob/main/CHANGELOG.md
-mkdocstrings-python
-
 # Library for manipulating IP prefixes and addresses
 # https://github.com/netaddr/netaddr/blob/master/CHANGELOG.rst
 netaddr
@@ -167,7 +151,3 @@ tablib
 # Timezone data (required by django-timezone-field on Python 3.9+)
 # https://github.com/python/tzdata/blob/master/NEWS.md
 tzdata
-
-# Documentation builder (succeeds mkdocs)
-# https://github.com/zensical/zensical
-zensical

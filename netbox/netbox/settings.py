@@ -128,7 +128,6 @@ DEFAULT_PERMISSIONS = getattr(configuration, 'DEFAULT_PERMISSIONS', {
     'users.delete_token': ({'user': '$user'},),
 })
 DEVELOPER = getattr(configuration, 'DEVELOPER', False)
-DOCS_ROOT = getattr(configuration, 'DOCS_ROOT', _PATHS.docs_root)
 EMAIL = getattr(configuration, 'EMAIL', {})
 STREAMING_EXPORTS = getattr(configuration, 'STREAMING_EXPORTS', False)
 EVENTS_PIPELINE = getattr(configuration, 'EVENTS_PIPELINE', [
@@ -598,9 +597,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'project-static', 'dist'),
     os.path.join(BASE_DIR, 'project-static', 'img'),
     os.path.join(BASE_DIR, 'project-static', 'js'),
-    # May not exist on a checkout until `manage.py upgrade --build-docs` runs (wheels bundle
-    # the pre-rendered site); collectstatic tolerates that.
-    ('docs', _PATHS.static_docs_root),  # Prefix with /docs
 )
 
 # Media URL

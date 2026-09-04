@@ -7,21 +7,8 @@ fresh installation and an upgrade. It does not perform host or bootstrap work
 stays in upgrade.sh and the documented pip steps.
 """
 
-import os
-import subprocess
-
-from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
-
-
-def _docs_source_root():
-    # mkdocs.yml sits beside the application root in a checkout. Wheels ship the
-    # pre-rendered site instead of the sources: no mkdocs.yml, the build is skipped.
-    candidate = os.path.dirname(settings.BASE_DIR)
-    if os.path.isfile(os.path.join(candidate, 'mkdocs.yml')):
-        return candidate
-    return None
 
 
 class Command(BaseCommand):
@@ -39,8 +26,6 @@ class Command(BaseCommand):
                             help="Skip collecting static files.")
         parser.add_argument('--skip-reindex', action='store_true', dest='skip_reindex',
                             help="Skip rebuilding the search index.")
-        parser.add_argument('--build-docs', action='store_true', dest='build_docs',
-                            help="Build the local documentation (requires the documentation source tree).")
 
     def handle(self, *args, **options):
         out, style = self.stdout, self.style
@@ -59,22 +44,6 @@ class Command(BaseCommand):
         else:
             out.write("Checking for missing cable paths...")
             call_command('trace_paths', no_input=options['no_input'], stdout=out)
-
-        # Documentation (filesystem; needs the documentation source tree)
-        if options['readonly'] and options['build_docs']:
-            out.write("Skipping documentation build.")
-        elif options['build_docs']:
-            docs_root = _docs_source_root()
-            if docs_root is None:
-                out.write(style.WARNING(
-                    "Skipping documentation build; the documentation source tree is not available "
-                    "in this installation."
-                ))
-            else:
-                out.write("Building documentation...")
-                # -c cleans the cache; -s (strict) is deliberately omitted so a docs
-                # warning cannot abort an instance upgrade.
-                subprocess.run(['zensical', 'build', '-c'], cwd=docs_root, check=True)
 
         # Static files (filesystem)
         if options['skip_static'] or options['readonly']:

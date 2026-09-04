@@ -124,10 +124,6 @@ exclude = [
 # force-include targets); after stripping they resolve to netbox/_data/...
 [tool.hatch.build.targets.wheel.force-include]
 "netbox/project-static/dist" = "netbox/netbox/_data/project-static/dist"
-# The pre-rendered documentation site ships in the wheel; render it with `zensical build`
-# before `python -m build` (the release workflow's build job does; see
-# docs/development/building-the-package.md for local builds).
-"netbox/project-static/docs" = "netbox/netbox/_data/docs"
 "netbox/project-static/img" = "netbox/netbox/_data/project-static/img"
 "netbox/project-static/js" = "netbox/netbox/_data/project-static/js"
 "netbox/release.yaml" = "netbox/netbox/_data/release.yaml"
@@ -155,8 +151,6 @@ include = [
     "/README.md",
     "/base_requirements.txt",
     "/contrib",
-    "/docs",
-    "/mkdocs.yml",
     "/netbox",
     "/pyproject.toml",
     "/requirements.txt",
@@ -177,9 +171,6 @@ exclude = [
 # Force the two tracked config templates in over the configuration*.py exclude above.
 "netbox/netbox/configuration_example.py" = "netbox/netbox/configuration_example.py"
 "netbox/netbox/configuration_testing.py" = "netbox/netbox/configuration_testing.py"
-# The rendered site is gitignored, so the plain /netbox include skips it; force it in so a
-# wheel rebuilt from the sdist (verify-sdist job, `pip install <sdist>`) ships the docs.
-"netbox/project-static/docs" = "netbox/project-static/docs"
 
 [tool.pyright]
 include = ["netbox"]

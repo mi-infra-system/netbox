@@ -21,13 +21,6 @@ repos:
       language: system
       pass_filenames: false
       types: [python]
-    - id: zensical-build
-      name: "Build documentation"
-      description: "Build the documentation with Zensical"
-      files: 'docs/'
-      entry: zensical build
-      language: system
-      pass_filenames: false
     - id: yarn-validate
       name: "Yarn validate"
       description: "Check UI ESLint, TypeScript, and Prettier compliance"

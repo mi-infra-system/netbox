@@ -25,40 +25,29 @@ class InstallPaths(NamedTuple):
     install_mode: str      # 'wheel' or 'checkout'
     base_dir: str          # package data root (BASE_DIR)
     netbox_root: str       # instance root for mutable files (NETBOX_ROOT)
-    docs_root: str         # documentation sources on a checkout, the pre-rendered site in a wheel (DOCS_ROOT default)
-    static_docs_root: str  # built documentation, source of the STATICFILES 'docs' prefix
 
 
 def resolve_install_paths(settings_dir, environ):
     """Resolve the install mode and filesystem roots for this NetBox installation.
 
-    A wheel bundles package data (including the pre-rendered documentation site)
-    under netbox/_data and keeps mutable instance files under an external instance root
-    (NETBOX_ROOT, default /opt/netbox); a source checkout keeps the historical layout,
-    where both roots are the project directory. All wheel-vs-checkout branching lives
-    here so settings.py stays declarative.
+    A wheel bundles package data under netbox/_data and keeps mutable instance files
+    under an external instance root (NETBOX_ROOT, default /opt/netbox); a source
+    checkout keeps the historical layout, where both roots are the project directory.
+    All wheel-vs-checkout branching lives here so settings.py stays declarative.
     """
     bundled_data = os.path.join(settings_dir, '_data')
     if os.path.isdir(bundled_data):
         install_mode = 'wheel'
         base_dir = bundled_data
         netbox_root = os.path.abspath(environ.get('NETBOX_ROOT', '/opt/netbox'))
-        docs_root = os.path.join(base_dir, 'docs')
-        # The wheel bundles the pre-rendered documentation site at _data/docs; it serves as
-        # both the DOCS_ROOT default and the STATICFILES 'docs' prefix source.
-        static_docs_root = docs_root
     else:
         install_mode = 'checkout'
         base_dir = os.path.dirname(settings_dir)
         netbox_root = base_dir
-        docs_root = os.path.join(os.path.dirname(base_dir), 'docs')
-        static_docs_root = os.path.join(base_dir, 'project-static', 'docs')
     return InstallPaths(
         install_mode=install_mode,
         base_dir=base_dir,
         netbox_root=netbox_root,
-        docs_root=docs_root,
-        static_docs_root=static_docs_root,
     )
 
 

@@ -13,7 +13,7 @@ NetBox is the core product maintained by NetBox Labs. The current version is 4.6
 - GraphQL via Strawberry, background jobs via django-rq
 - django-tables2 for list views, django-filter for filtering
 - drf-spectacular for OpenAPI/Swagger schema generation
-- Docs: MkDocs with mkdocs-material theme (in `docs/`)
+- Docs: Markdown source tree retained in `docs/` (not built or bundled at runtime)
 - Ruff for lint (config in `pyproject.toml`)
 
 ## Repository Map
@@ -72,7 +72,6 @@ NetBox is the core product maintained by NetBox Labs. The current version is 4.6
 ├── contrib/                   — Example configs (systemd, nginx, generated schemas)
 ├── pyproject.toml             — Project metadata, ruff config
 ├── requirements.txt           — Python dependencies
-└── mkdocs.yml                 — Docs site configuration
 ```
 
 ## Architecture
@@ -151,8 +150,6 @@ All commands run from the `netbox/` subdirectory with the venv active. There is 
 | `python manage.py nbshell` | NetBox-enhanced interactive shell |
 | `python manage.py collectstatic` | Collect static assets |
 | `ruff check` | Lint (run from repo root) |
-| `mkdocs serve` | Preview documentation |
-| `mkdocs build` | Build static docs site |
 
 ## Development Setup
 

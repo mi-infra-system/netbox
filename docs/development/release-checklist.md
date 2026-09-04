@@ -29,7 +29,7 @@ Close the [release milestone](https://github.com/netbox-community/netbox/milesto
 
 ### Update the Release Notes
 
-Check that a link to the release notes for the new version is present in the navigation menu (defined in `mkdocs.yml`), and that a summary of all major new features has been added to `docs/index.md`.
+Check that a link to the release notes for the new version is present in the documentation source tree, and that a summary of all major new features has been added to `docs/index.md`.
 
 ### Update System Requirements
 
@@ -47,7 +47,6 @@ If a new Django release is adopted or other major dependencies (Python, PostgreS
 Start the documentation server and navigate to the current version of the installation docs:
 
 ```no-highlight
-zensical serve
 ```
 
 Follow these instructions to perform a new installation of NetBox in a temporary environment. This process must not be automated: The goal of this step is to catch any errors or omissions in the documentation and ensure that it is kept up to date for each release. Make any necessary changes to the documentation before proceeding with the release.
