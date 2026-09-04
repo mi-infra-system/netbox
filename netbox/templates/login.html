@@ -34,68 +34,43 @@
       {% endif %}
 
       <div class="card card-md">
-        {% if not login_form_hidden %}
-          <div class="card-body">
-            <h2 class="text-center mb-4">{% trans "Log In" %}</h2>
+        <div class="card-body">
+          <h2 class="text-center mb-4">{% trans "Log In" %}</h2>
 
-            {# Login form #}
-            <form action="{% url 'login' %}" method="post">
-              {% csrf_token %}
+          {# Login form #}
+          <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
 
-              {# Set post-login URL #}
-              {% if 'next' in request.GET %}
-                <input type="hidden" name="next" value="{{ request.GET.next }}" />
-              {% elif 'next' in request.POST %}
-                <input type="hidden" name="next" value="{{ request.POST.next }}" />
-              {% endif %}
-
-              <div class="form-group mb-3">
-                <label for="id_username" class="form-label">{{ form.username.label }}</label>
-                {{ form.username }}
-                {% for error in form.username.errors %}
-                  <div class="alert alert-danger">{{ error }}</div>
-                {% endfor %}
-              </div>
-
-              <div class="form-group">
-                <label for="id_password" class="form-label">{{ form.password.label }}</label>
-                {{ form.password }}
-                {% for error in form.password.errors %}
-                  <div class="alert alert-danger">{{ error }}</div>
-                {% endfor %}
-              </div>
-
-              <div class="form-footer">
-                <button type="submit" class="btn btn-primary w-100">
-                  {% trans "Sign In" %}
-                </button>
-              </div>
-            </form>
-          </div>
-        {% endif %}
-
-        {# SSO login #}
-        {% if auth_backends %}
-          {% if not login_form_hidden %}
-            <div class="hr-text">{% trans "Or" context "Denotes an alternative option" %}</div>
-          {% endif %}
-          <div class="card-body">
-            {% if login_form_hidden %}
-              <h2 class="text-center mb-4">{% trans "Log In" %}</h2>
+            {# Set post-login URL #}
+            {% if 'next' in request.GET %}
+              <input type="hidden" name="next" value="{{ request.GET.next }}" />
+            {% elif 'next' in request.POST %}
+              <input type="hidden" name="next" value="{{ request.POST.next }}" />
             {% endif %}
-            <div class="row">
-              {% for backend in auth_backends %}
-                <div class="col">
-                  <a href="{{ backend.url }}" class="btn w-100">
-                    {% if backend.icon_name %}<i class="mdi mdi-{{ backend.icon_name }}"></i>
-                    {% elif backend.icon_img %}<img src="{{ backend.icon_img }}" height="24"{% if backend.display_name %}class="me-2 sso-icon" {% endif %}/>{% endif %}
-                    {{ backend.display_name }}
-                  </a>
-                </div>
+
+            <div class="form-group mb-3">
+              <label for="id_username" class="form-label">{{ form.username.label }}</label>
+              {{ form.username }}
+              {% for error in form.username.errors %}
+                <div class="alert alert-danger">{{ error }}</div>
               {% endfor %}
             </div>
-          </div>
-        {% endif %}
+
+            <div class="form-group">
+              <label for="id_password" class="form-label">{{ form.password.label }}</label>
+              {{ form.password }}
+              {% for error in form.password.errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            <div class="form-footer">
+              <button type="submit" class="btn btn-primary w-100">
+                {% trans "Sign In" %}
+              </button>
+            </div>
+          </form>
+        </div>
 
       </div>
 

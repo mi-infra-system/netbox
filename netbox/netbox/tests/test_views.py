@@ -5,6 +5,7 @@ from unittest.mock import patch
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse
 from django.test import Client, TransactionTestCase, override_settings
+from django.test import TestCase as DjangoTestCase
 from django.urls import reverse
 
 from dcim.choices import DeviceStatusChoices, InterfaceTypeChoices, SiteStatusChoices
@@ -27,6 +28,33 @@ class HomeViewTestCase(TestCase):
         url = reverse('home')
         response = self.client.get(url)
         self.assertHttpStatus(response, 200)
+
+
+class LoginViewTestCase(DjangoTestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(username='local-login', password='local-login-password')
+
+    def test_local_login(self):
+        self.client.logout()
+        response = self.client.post(
+            reverse('login'),
+            {
+                'username': self.user.username,
+                'password': 'local-login-password',
+            },
+        )
+
+        self.assertRedirects(response, reverse('home'))
+        self.assertTrue(response.wsgi_request.user.is_authenticated)
+
+    def test_login_page_has_only_local_login_form(self):
+        self.client.logout()
+        response = self.client.get(reverse('login'))
+
+        self.assertContains(response, 'name="username"')
+        self.assertNotContains(response, '/oauth/')
 
 
 class SearchViewTestCase(TestCase):

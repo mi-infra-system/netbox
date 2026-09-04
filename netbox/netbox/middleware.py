@@ -10,9 +10,7 @@ from django.db import ProgrammingError, connection
 from django.db.utils import InternalError
 from django.http import Http404, HttpResponseRedirect
 from django.middleware.common import CommonMiddleware as DjangoCommonMiddleware
-from django.utils.translation import gettext_lazy as _
 from django_prometheus import middleware
-from social_django.middleware import SocialAuthExceptionMiddleware as SocialAuthExceptionMiddleware_
 
 from netbox.config import clear_config, get_config
 from netbox.metrics import Metrics
@@ -28,7 +26,6 @@ __all__ = (
     'PrometheusAfterMiddleware',
     'PrometheusBeforeMiddleware',
     'RemoteUserMiddleware',
-    'SocialAuthExceptionMiddleware',
 )
 
 
@@ -289,13 +286,3 @@ class MaintenanceModeMiddleware:
             messages.error(request, error_message)
             return HttpResponseRedirect(request.path_info)
         return None
-
-
-class SocialAuthExceptionMiddleware(SocialAuthExceptionMiddleware_):
-    """
-    Subclass of python-social-auth's exception middleware which surfaces a generic, user-friendly
-    message rather than exposing the raw social_core exception text to (typically unauthenticated)
-    users when an SSO/SAML login fails.
-    """
-    def get_message(self, request, exception):
-        return _("Single sign-on failed. Please try again or contact your administrator.")

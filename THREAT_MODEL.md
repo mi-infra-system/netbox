@@ -107,7 +107,7 @@ The following are **not** treated as NetBox vulnerabilities. Most describe a pri
 
 | Category | NetBox posture |
 | --- | --- |
-| **S**poofing | Authentication via local accounts, LDAP, or SSO (python-social-auth); API tokens. Authoritative client-IP determination is delegated to the reverse proxy. |
+| **S**poofing | Authentication via local accounts, LDAP, or HTTP remote-user headers; API tokens. Authoritative client-IP determination is delegated to the reverse proxy. |
 | **T**ampering | All writes are gated by object-based permissions with optional constraints, validated within atomic transactions. Code-bearing objects are writable only by trusted users. |
 | **R**epudiation | Changes are recorded via the changelog and journaling; event rules can emit notifications. |
 | **I**nformation disclosure | Object-based view permissions filter every queryset. Cross-boundary disclosure (e.g. API/GraphQL filter injection) is in scope; data legitimately visible to a template author is not. |

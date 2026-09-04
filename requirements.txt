@@ -35,8 +35,6 @@ PyYAML==6.0.3
 redis==7.4.1
 requests==2.34.2
 rq==2.12.0
-social-auth-app-django==5.9.0
-social-auth-core==4.8.7
 sorl-thumbnail==13.1.0
 strawberry-graphql==0.327.0
 strawberry-graphql-django==0.88.0

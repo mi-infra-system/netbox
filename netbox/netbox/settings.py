@@ -157,7 +157,6 @@ LOGGING = getattr(configuration, 'LOGGING', {})
 LOGIN_PERSISTENCE = getattr(configuration, 'LOGIN_PERSISTENCE', False)
 LOGIN_REQUIRED = getattr(configuration, 'LOGIN_REQUIRED', True)
 LOGIN_TIMEOUT = getattr(configuration, 'LOGIN_TIMEOUT', None)
-LOGIN_FORM_HIDDEN = getattr(configuration, 'LOGIN_FORM_HIDDEN', False)
 LOGOUT_REDIRECT_URL = getattr(configuration, 'LOGOUT_REDIRECT_URL', 'home')
 MEDIA_ROOT = getattr(configuration, 'MEDIA_ROOT', os.path.join(NETBOX_ROOT, 'media')).rstrip('/')
 METRICS_ENABLED = getattr(configuration, 'METRICS_ENABLED', False)
@@ -488,7 +487,6 @@ INSTALLED_APPS = [
     'strawberry_django',
     'mptt',
     'rest_framework',
-    'social_django',
     'sorl.thumbnail',
     'taggit',
     'timezone_field',
@@ -526,7 +524,6 @@ MIDDLEWARE = [
     'netbox.middleware.RemoteUserMiddleware',
     'netbox.middleware.CoreMiddleware',
     'netbox.middleware.MaintenanceModeMiddleware',
-    'netbox.middleware.SocialAuthExceptionMiddleware',
 ]
 
 if DEBUG:
@@ -722,40 +719,6 @@ CENSUS_URL = 'https://census.netbox.oss.netboxlabs.com/api/v1/'
 
 NETBOX_COPILOT_URL = 'https://static.copilot.netboxlabs.ai/load.js'
 
-
-#
-# Django social auth
-#
-
-SOCIAL_AUTH_PIPELINE = (
-    'social_core.pipeline.social_auth.social_details',
-    'social_core.pipeline.social_auth.social_uid',
-    'social_core.pipeline.social_auth.social_user',
-    'social_core.pipeline.user.get_username',
-    'social_core.pipeline.user.create_user',
-    'social_core.pipeline.social_auth.associate_user',
-    'netbox.authentication.user_default_groups_handler',
-    'social_core.pipeline.social_auth.load_extra_data',
-    'social_core.pipeline.user.user_details',
-)
-
-# Redirect users back to the login page (surfacing the error via the messages framework) when an
-# SSO/SAML authentication failure occurs, rather than raising an HTTP 500. Full exceptions are still
-# raised when DEBUG is enabled. LOGIN_URL is an absolute path which respects BASE_PATH; the social
-# auth middleware passes this value directly to an HttpResponseRedirect without reversing it.
-SOCIAL_AUTH_LOGIN_ERROR_URL = LOGIN_URL
-SOCIAL_AUTH_RAISE_EXCEPTIONS = DEBUG
-
-# Load all SOCIAL_AUTH_* settings from the user configuration
-for param in dir(configuration):
-    if param.startswith('SOCIAL_AUTH_'):
-        globals()[param] = getattr(configuration, param)
-
-# Force usage of PostgreSQL's JSONB field for extra data
-SOCIAL_AUTH_JSONFIELD_ENABLED = True
-SOCIAL_AUTH_CLEAN_USERNAME_FUNCTION = 'users.utils.clean_username'
-
-SOCIAL_AUTH_USER_MODEL = AUTH_USER_MODEL
 
 #
 # Django Prometheus

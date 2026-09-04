@@ -27,8 +27,7 @@ def log_user_login_failed(sender, credentials, request, **kwargs):
 def set_language_on_login(sender, user, request, **kwargs):
     """
     Store the user's preferred language on the request so that middleware can set the language cookie. This ensures the
-    language preference is applied even when logging in via an external auth provider (e.g. social-app-django) that
-    does not go through NetBox's LoginView.
+    language preference is applied for all authentication paths that do not go through NetBox's LoginView.
     """
     if hasattr(user, 'config'):
         if language := user.config.get('locale.language'):

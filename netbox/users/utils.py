@@ -1,6 +1,10 @@
+import re
+
 from django.conf import settings
 from django.db.models import Q
-from social_core.storage import NO_ASCII_REGEX, NO_SPECIAL_REGEX
+
+NO_ASCII_REGEX = re.compile(r"[^\x00-\x7F]+")
+NO_SPECIAL_REGEX = re.compile(r"[^\w.@+_-]+", re.UNICODE)
 
 __all__ = (
     'clean_username',
@@ -71,9 +75,7 @@ def user_may_grant_token(requesting_user, token_user):
 def clean_username(value):
     """Clean username removing any unsupported character"""
     value = NO_ASCII_REGEX.sub('', value)
-    value = NO_SPECIAL_REGEX.sub('', value)
-    value = value.replace(':', '')
-    return value
+    return NO_SPECIAL_REGEX.sub('', value)
 
 
 def get_current_pepper():

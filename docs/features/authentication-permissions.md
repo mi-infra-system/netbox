@@ -30,20 +30,3 @@ Check out the [permissions documentation](../administration/permissions.md) for 
 ## LDAP Authentication
 
 NetBox includes a built-in authentication backend for authenticating users against a remote LDAP server. The [installation documentation](../installation/6-ldap.md) provides more detail on this capability.
-
-## Single Sign-On (SSO)
-
-NetBox integrates with the open source [python-social-auth](https://github.com/python-social-auth) library to provide [myriad options](https://python-social-auth.readthedocs.io/en/latest/backends/index.html#supported-backends) for single sign-on (SSO) authentication. These include:
-
-* Cognito
-* GitHub & GitHub Enterprise
-* GitLab
-* Google
-* Hashicorp Vault
-* Keycloak
-* Microsoft Entra ID
-* Microsoft Graph
-* Okta
-* OIDC
-
-...and many others. It's also possible to build your own custom backends as needed using python-social-auth's base OAuth, OpenID, and SAML classes. You can find some examples of configuring SSO in NetBox' [authentication documentation](../administration/authentication/overview.md).

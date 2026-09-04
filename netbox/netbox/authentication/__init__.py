@@ -21,53 +21,6 @@ from utilities.permissions import (
 
 from .misc import _mirror_groups
 
-AUTH_BACKEND_ATTRS = {
-    # backend name: title, MDI icon name
-    'amazon': ('Amazon AWS', 'aws'),
-    'apple': ('Apple', 'apple'),
-    'auth0': ('Auth0', None),
-    'azuread-oauth2': ('Microsoft Entra ID', 'microsoft'),
-    'azuread-b2c-oauth2': ('Microsoft Entra ID', 'microsoft'),
-    'azuread-tenant-oauth2': ('Microsoft Entra ID', 'microsoft'),
-    'azuread-v2-tenant-oauth2': ('Microsoft Entra ID', 'microsoft'),
-    'bitbucket': ('BitBucket', 'bitbucket'),
-    'bitbucket-oauth2': ('BitBucket', 'bitbucket'),
-    'digitalocean': ('DigitalOcean', 'digital-ocean'),
-    'docker': ('Docker', 'docker'),
-    'github': ('GitHub', 'github'),
-    'github-app': ('GitHub', 'github'),
-    'github-org': ('GitHub', 'github'),
-    'github-team': ('GitHub', 'github'),
-    'github-enterprise': ('GitHub Enterprise', 'github'),
-    'github-enterprise-org': ('GitHub Enterprise', 'github'),
-    'github-enterprise-team': ('GitHub Enterprise', 'github'),
-    'gitlab': ('GitLab', 'gitlab'),
-    'google-oauth2': ('Google', 'google'),
-    'google-openidconnect': ('Google', 'google'),
-    'hubspot': ('HubSpot', 'hubspot'),
-    'keycloak': ('Keycloak', None),
-    'microsoft-graph': ('Microsoft Graph', 'microsoft'),
-    'oidc': ('OpenID Connect', None),
-    'okta': ('Okta', None),
-    'okta-openidconnect': ('Okta (OIDC)', None),
-    'salesforce-oauth2': ('Salesforce', 'salesforce'),
-}
-# Override with potential user configuration
-AUTH_BACKEND_ATTRS.update(getattr(settings, 'SOCIAL_AUTH_BACKEND_ATTRS', {}))
-
-
-def get_auth_backend_display(name):
-    """
-    Return the user-friendly name and icon name for a remote authentication backend, if
-    known. Obtained from the defaults dictionary AUTH_BACKEND_ATTRS, overridden by the
-    setting `SOCIAL_AUTH_BACKEND_ATTRS`. Defaults to the raw backend name and no icon.
-    """
-    return AUTH_BACKEND_ATTRS.get(name, (name, None))
-
-
-def get_saml_idps():
-    return getattr(settings, "SOCIAL_AUTH_SAML_ENABLED_IDPS", {}).keys()
-
 
 class ObjectPermissionMixin:
 
@@ -379,25 +332,3 @@ class LDAPBackend:
             ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, ca_cert_file)
 
         return obj
-
-
-# Custom Social Auth Pipeline Handlers
-def user_default_groups_handler(backend, user, response, *args, **kwargs):
-    """
-    Custom pipeline handler which adds remote auth users to the default group specified in the
-    configuration file.
-    """
-    logger = logging.getLogger('netbox.auth.user_default_groups_handler')
-    if settings.REMOTE_AUTH_DEFAULT_GROUPS:
-        # Assign default groups to the user
-        group_list = []
-        for name in settings.REMOTE_AUTH_DEFAULT_GROUPS:
-            try:
-                group_list.append(Group.objects.get(name=name))
-            except Group.DoesNotExist:
-                logging.error(
-                    f"Could not assign group {name} to remotely-authenticated user {user}: Group not found")
-        if group_list:
-            user.groups.add(*group_list)
-        else:
-            logger.info(f"No valid group assignments for {user} - REMOTE_AUTH_DEFAULT_GROUPS may be incorrectly set?")
