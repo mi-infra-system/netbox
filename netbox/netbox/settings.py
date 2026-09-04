@@ -6,7 +6,6 @@ import platform
 import sys
 import warnings
 
-import storages.utils  # type: ignore
 from django.contrib.messages import constants as messages
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.core.validators import URLValidator
@@ -216,8 +215,6 @@ SESSION_COOKIE_NAME = getattr(configuration, 'SESSION_COOKIE_NAME', 'sessionid')
 SESSION_COOKIE_PATH = CSRF_COOKIE_PATH
 SESSION_COOKIE_SECURE = getattr(configuration, 'SESSION_COOKIE_SECURE', False)
 SESSION_FILE_PATH = getattr(configuration, 'SESSION_FILE_PATH', None)
-STORAGE_BACKEND = getattr(configuration, 'STORAGE_BACKEND', None)
-STORAGE_CONFIG = getattr(configuration, 'STORAGE_CONFIG', None)
 STORAGES = getattr(configuration, 'STORAGES', {})
 TIME_ZONE = getattr(configuration, 'TIME_ZONE', 'UTC')
 TRANSLATION_ENABLED = getattr(configuration, 'TRANSLATION_ENABLED', True)
@@ -299,23 +296,6 @@ if 'ENGINE' not in DATABASES['default']:
 # Storage backend
 #
 
-if STORAGE_BACKEND is not None:
-    if not STORAGES:
-        raise ImproperlyConfigured(
-            "STORAGE_BACKEND and STORAGES are both set, remove the deprecated STORAGE_BACKEND setting."
-        )
-    else:
-        warnings.warn(
-            "STORAGE_BACKEND is deprecated, use the new STORAGES setting instead.",
-            FutureWarning,
-        )
-
-if STORAGE_CONFIG is not None:
-    warnings.warn(
-        "STORAGE_CONFIG is deprecated, use the new STORAGES setting instead.",
-        FutureWarning,
-    )
-
 # Default STORAGES for Django
 DEFAULT_STORAGES = {
     "default": {
@@ -332,36 +312,6 @@ DEFAULT_STORAGES = {
     },
 }
 STORAGES = DEFAULT_STORAGES | STORAGES
-
-# TODO: This code is deprecated and needs to be removed in the future
-if STORAGE_BACKEND is not None:
-    STORAGES['default']['BACKEND'] = STORAGE_BACKEND
-
-# Monkey-patch django-storages to fetch settings from STORAGE_CONFIG
-if STORAGE_CONFIG is not None:
-    def _setting(name, default=None):
-        if name in STORAGE_CONFIG:
-            return STORAGE_CONFIG[name]
-        return globals().get(name, default)
-    storages.utils.setting = _setting
-
-# django-storage-swift
-if STORAGE_BACKEND == 'swift.storage.SwiftStorage':
-    try:
-        import swift.utils  # noqa: F401
-    except ModuleNotFoundError as e:
-        if getattr(e, 'name') == 'swift':
-            raise ImproperlyConfigured(
-                f"STORAGE_BACKEND is set to {STORAGE_BACKEND} but django-storage-swift is not present. "
-                "It can be installed by running 'pip install django-storage-swift'."
-            )
-        raise e
-
-    # Load all SWIFT_* settings from the user configuration
-    for param, value in STORAGE_CONFIG.items():
-        if param.startswith('SWIFT_'):
-            globals()[param] = value
-# TODO: End of deprecated code
 
 #
 # Redis

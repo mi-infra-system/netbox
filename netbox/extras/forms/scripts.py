@@ -75,7 +75,7 @@ class ScriptForm(forms.Form):
 
 class ScriptFileForm(ManagedFileForm):
     """
-    ManagedFileForm with a custom save method to use django-storages.
+    ManagedFileForm with a custom save method for local script storage.
     """
     def clean(self):
         super().clean()

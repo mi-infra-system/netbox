@@ -40,7 +40,6 @@ EXPECTED_EXTRAS = frozenset({
     's3',
     'saml2',
     'sentry',
-    'swift',
 })
 
 # Aggregate extra -> the component extras whose entries it must equal the union of.

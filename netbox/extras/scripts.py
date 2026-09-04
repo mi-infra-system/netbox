@@ -337,7 +337,7 @@ class BaseScript:
         # Declare the placeholder for the current request
         self.request = None
 
-        # Initiate the storage backend (local, S3, etc) as a class attr
+        # Initiate the configured local script storage as a class attr
         self.storage = storages.create_storage(storages.backends["scripts"])
 
         # Compile test methods and initialize results skeleton

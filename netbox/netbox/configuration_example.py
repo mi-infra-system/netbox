@@ -234,8 +234,7 @@ SESSION_FILE_PATH = None
 # RAM_BASE_UNIT = 1024
 
 # Within the STORAGES dictionary, "default" is used for image uploads, "staticfiles" is for static files and "scripts"
-# is used for custom scripts. See django-storages and django-storage-swift libraries for more details. By default the
-# following configuration is used:
+# is used for custom scripts. The default configuration uses Django's local filesystem storage:
 # STORAGES = {
 #     "default": {
 #         "BACKEND": "django.core.files.storage.FileSystemStorage",

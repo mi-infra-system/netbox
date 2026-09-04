@@ -29,7 +29,6 @@ ldap = ["django-auth-ldap"]
 saml2 = ["python3-saml"]
 remote-auth = ["django-auth-ldap", "python3-saml"]
 sentry = ["sentry-sdk"]
-swift = ["django-storage-swift"]
 s3 = ["boto3"]
 git = ["dulwich"]
 # NetBox Labs plugins (proprietary, opt-in). Minor-bounded to the tested series.
