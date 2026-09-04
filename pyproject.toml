@@ -81,7 +81,6 @@ omit = [
     "*/netbox/wsgi.py",  # WSGI entrypoint
     "*/netbox/__main__.py",  # `python -m netbox` entry point
     "*/generate_secret_key.py",  # standalone CLI helper
-    "*/utilities/debug.py",  # debug-toolbar hook, active only when DEBUG=True
     "*/extras/management/commands/housekeeping.py",  # deprecated; will not be tested
 ]
 

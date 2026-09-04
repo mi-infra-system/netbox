@@ -10,17 +10,9 @@ Django==6.0.*
 # https://github.com/adamchainz/django-cors-headers/blob/main/CHANGELOG.rst
 django-cors-headers
 
-# Runtime UI tool for debugging Django
-# https://github.com/jazzband/django-debug-toolbar/blob/main/docs/changes.rst
-django-debug-toolbar
-
 # Library for writing reusable URL query filters
 # https://github.com/carltongibson/django-filter/blob/main/CHANGES.rst
 django-filter
-
-# Django Debug Toolbar extension for GraphiQL
-# https://github.com/flavors/django-graphiql-debug-toolbar/blob/main/CHANGES.rst
-django-graphiql-debug-toolbar
 
 # HTMX utilities for Django
 # https://django-htmx.readthedocs.io/en/latest/changelog.html

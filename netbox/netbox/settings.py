@@ -479,7 +479,6 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'django.forms',
     'corsheaders',
-    'debug_toolbar',
     'django_filters',
     'django_htmx',
     'django_tables2',
@@ -506,9 +505,6 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'drf_spectacular_sidecar',
 ]
-if not DEBUG and 'collectstatic' not in sys.argv:
-    INSTALLED_APPS.remove('debug_toolbar')
-
 # Middleware
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -525,12 +521,6 @@ MIDDLEWARE = [
     'netbox.middleware.CoreMiddleware',
     'netbox.middleware.MaintenanceModeMiddleware',
 ]
-
-if DEBUG:
-    MIDDLEWARE = [
-        "strawberry_django.middlewares.debug_toolbar.DebugToolbarMiddleware",
-        *MIDDLEWARE,
-    ]
 
 if METRICS_ENABLED:
     # If metrics are enabled, add the before & after Prometheus middleware
@@ -629,11 +619,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SERIALIZATION_MODULES = {
     'json': 'utilities.serializers.json',
 }
-
-DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': 'utilities.debug.show_toolbar',
-}
-
 
 #
 # Permissions & authentication

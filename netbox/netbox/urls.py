@@ -77,11 +77,6 @@ _patterns = [
     path('api/plugins/', include((plugin_api_patterns, 'plugins-api'))),
 ]
 
-# django-debug-toolbar
-if settings.DEBUG:
-    import debug_toolbar
-    _patterns.append(path('__debug__/', include(debug_toolbar.urls)))
-
 # Prometheus metrics
 if settings.METRICS_ENABLED:
     _patterns.append(path('', include('django_prometheus.urls')))
